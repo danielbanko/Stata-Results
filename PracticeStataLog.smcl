@@ -5,10 +5,38 @@
 . * Date modified:
 . * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
 . 
-. //clean the data
+. //Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
+. * gen var2=regexr(var1,"[.\{c )-}\)\*a-zA-Z]+","")
+. * destring var2, replace
 . 
-. 
-. 
+. * or to extract strings:
+. * gen var2=regexr(var1,"[.0-9]+","")
+. label define binaryCode 0 "No" 1 "Yes"
+{txt}
+{com}. 
+. import delimited /`projectpath'/datasets/KaggleV2-May-2016.csv
+{res}{text}(14 vars, 110527 obs)
+
+{com}. //clean the data
+. drop if age < 0
+{txt}(1 observation deleted)
+
+{com}. foreach var of varlist noshow {c -(}
+{txt}  2{com}.         encode `var', gen(_`var')
+{txt}  3{com}.         replace _`var' = _`var' - 1
+{txt}  4{com}.         label values _`var' binaryCode
+{txt}  5{com}. {c )-}
+{txt}(110526 real changes made)
+
+{com}. 
+. foreach var of varlist scholarship hipertension diabetes alcoholism handcap sms_received {c -(}
+{txt}  2{com}.         label values `var' binaryCode
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. numlabel, add
+{res}{txt}
+{com}. 
 . local categoricalVars "gender scholarship hipertension diabetes alcoholism handcap sms_received noshow neighbourhood"
 {txt}
 {com}. local size : word count `categoricalVars'
@@ -17,13 +45,6 @@
 . di "We have `size' categorical variables."
 {res}We have 9 categorical variables.
 {txt}
-{com}. 
-. import delimited /`projectpath'/KaggleV2-May-2016.csv
-{res}{text}(14 vars, 110527 obs)
-
-{com}. drop if age < 0
-{txt}(1 observation deleted)
-
 {com}. 
 . *summarizing the categorical vars:
 . foreach var of varlist `categoricalVars' {c -(}
@@ -48,8 +69,8 @@
 
 {txt}Scholarship {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}     99,665 {txt}{c |}*****************************************************
-          1 {c |}{res}     10,861 {txt}{c |}******
+      0. No {c |}{res}     99,665 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     10,861 {txt}{c |}******
 {hline 12}{c +}{hline 12}{c +}{hline 53}
       Total {c |}{res}    110,526 
 
@@ -60,8 +81,8 @@ hipertension {c |}{res}    110526    .1972477    .3979227          0          1
 {txt}Hipertensio {c |}
           n {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}     88,725 {txt}{c |}*****************************************************
-          1 {c |}{res}     21,801 {txt}{c |}*************
+      0. No {c |}{res}     88,725 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     21,801 {txt}{c |}*************
 {hline 12}{c +}{hline 12}{c +}{hline 53}
       Total {c |}{res}    110,526 
 
@@ -71,8 +92,8 @@ hipertension {c |}{res}    110526    .1972477    .3979227          0          1
 
    {txt}Diabetes {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}    102,583 {txt}{c |}*****************************************************
-          1 {c |}{res}      7,943 {txt}{c |}****
+      0. No {c |}{res}    102,583 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      7,943 {txt}{c |}****
 {hline 12}{c +}{hline 12}{c +}{hline 53}
       Total {c |}{res}    110,526 
 
@@ -82,8 +103,8 @@ hipertension {c |}{res}    110526    .1972477    .3979227          0          1
 
  {txt}Alcoholism {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}    107,166 {txt}{c |}*****************************************************
-          1 {c |}{res}      3,360 {txt}{c |}**
+      0. No {c |}{res}    107,166 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      3,360 {txt}{c |}**
 {hline 12}{c +}{hline 12}{c +}{hline 53}
       Total {c |}{res}    110,526 
 
@@ -93,8 +114,8 @@ hipertension {c |}{res}    110526    .1972477    .3979227          0          1
 
     {txt}Handcap {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}    108,285 {txt}{c |}*****************************************************
-          1 {c |}{res}      2,042 {txt}{c |}*
+      0. No {c |}{res}    108,285 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      2,042 {txt}{c |}*
           2 {c |}{res}        183 {txt}{c |}
           3 {c |}{res}         13 {txt}{c |}
           4 {c |}{res}          3 {txt}{c |}
@@ -108,8 +129,8 @@ sms_received {c |}{res}    110526    .3210285    .4668738          0          1
 {txt}SMS_receive {c |}
           d {c |}      Freq.
 {hline 12}{c +}{hline 12}{c +}{hline 53}
-          0 {c |}{res}     75,044 {txt}{c |}*****************************************************
-          1 {c |}{res}     35,482 {txt}{c |}*************************
+      0. No {c |}{res}     75,044 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     35,482 {txt}{c |}*************************
 {hline 12}{c +}{hline 12}{c +}{hline 53}
       Total {c |}{res}    110,526 
 
@@ -215,7 +236,7 @@ ILHAS OCEÌ?NICAS DE TRINDADE {c |}{res}          2 {txt}{c |}
                        Total {c |}{res}    110,526 
 {txt}
 {com}. 
-. note gender: there is not a significant difference between no-show rates of males vs females
+. notes gender: there is no significant difference between the no-show rates of males and females
 {res}{txt}
 {com}. 
 . save "PracticeDataCleaned.dta", replace

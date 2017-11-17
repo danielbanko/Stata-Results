@@ -2,7 +2,7 @@
 capture log close
 clear
 set more off
-local projectpath "/Users/Banjodan2/Desktop/StataPractice/"
+local projectpath "/Users/Banjodan2/Documents/Dropbox/StataPractice"
 cd `projectpath'
 capture log using "PracticeStataLog", replace
 /*************************************************
@@ -10,10 +10,28 @@ capture log using "PracticeStataLog", replace
 * Date modified:
 * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
 
-import delimited /`projectpath'/KaggleV2-May-2016.csv
+//Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
+* gen var2=regexr(var1,"[.\}\)\*a-zA-Z]+","")
+* destring var2, replace
+
+* or to extract strings:
+* gen var2=regexr(var1,"[.0-9]+","")
+label define binaryCode 0 "No" 1 "Yes"
+
+import delimited /`projectpath'/datasets/KaggleV2-May-2016.csv
 //clean the data
 drop if age < 0
+foreach var of varlist noshow {
+	encode `var', gen(_`var')
+	replace _`var' = _`var' - 1
+	label values _`var' binaryCode
+}
 
+foreach var of varlist scholarship hipertension diabetes alcoholism handcap sms_received {
+	label values `var' binaryCode
+}
+
+numlabel, add
 
 local categoricalVars "gender scholarship hipertension diabetes alcoholism handcap sms_received noshow neighbourhood"
 local size : word count `categoricalVars'
@@ -26,9 +44,15 @@ foreach var of varlist `categoricalVars' {
 	tabulate `var', missing plot
 }
 
-note gender: there is not a significant difference between no-show rates of males vs females
+notes gender: there is no significant difference between the no-show rates of males and females
 
 save "PracticeDataCleaned.dta", replace
+
+//now let's try outputting our results in latex:
+texdoc init practiceOutput, replace
+texdoc stlog
 capture log close
+
+translate PracticeStataLog.smcl PracticeStataLogPDF.pdf, replace
 
 //leave blank
