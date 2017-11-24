@@ -10,12 +10,6 @@ capture log using "PracticeStataLog", replace
 * Date modified:
 * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
 
-//Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
-* gen var2=regexr(var1,"[.\}\)\*a-zA-Z]+","")
-* destring var2, replace
-
-* or to extract strings:
-* gen var2=regexr(var1,"[.0-9]+","")
 label define binaryCode 0 "No" 1 "Yes"
 
 import delimited /`projectpath'/datasets/KaggleV2-May-2016.csv
@@ -48,10 +42,10 @@ notes gender: there is no significant difference between the no-show rates of ma
 
 save "PracticeDataCleaned.dta", replace
 
-//now let's try outputting our results in latex:
-texdoc init practiceOutput, replace
-texdoc stlog
-capture log close
+*tabbout eststo esttab estadd
+eststo: regress _noshow sms_received age
+esttab using "test.tex", replace se r2 nocons booktabs
+eststo clear
 
 translate PracticeStataLog.smcl PracticeStataLogPDF.pdf, replace
 

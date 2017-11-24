@@ -1,0 +1,575 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/banjodan2/Desktop/ec31projectanalysis.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}14 Dec 2015, 15:50:30
+{txt}
+{com}. 
+. * Do file for Group 7 Project Fall 2015
+. * Daniel Banko
+. /*------------------------------------------------------------------------------
+>                 Date Created: Oct 21, 2015
+> ------------------------------------------------------------------------------*/
+. 
+. summarize
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+personalMa~s {c |}{res}        89     2.58427    2.245242          0          9
+{txt}predictedM~s {c |}{res}        89    2.224719    1.285874          0          6
+{txt}{space 8}diff {c |}{res}        89    .3595506    2.616587         -6          7
+{txt}goWithFriend {c |}{res}        86    .4302326    .4980125          0          1
+{txt}{space 2}thirdOfDay {c |}{res}        75        1.72    1.020863          0          3
+{txt}{hline 13}{c +}{hline 56}
+varsityAth~e {c |}{res}        89    .2359551    .4269999          0          1
+{txt}{space 1}clubAthlete {c |}{res}        89    .1685393    .3764655          0          1
+{txt}breakfastF~q {c |}{res}        89    1.168539    .8425604          0          2
+{txt}{space 2}firstClass {c |}{res}        89    9.424719    1.053338          8      13.25
+{txt}{space 3}classYear {c |}{res}        88       1.125    .8685104          0          3
+{txt}{hline 13}{c +}{hline 56}
+{space 6}gender {c |}{res}        89    .6292135    .5304805          0          2
+{txt}{space 6}female {c |}{res}        89    .5842697    .4956398          0          1
+{txt}{space 1}femalexdiff {c |}{res}        89   -.0561798    1.753954         -6          4
+{txt}hoursOfSleep {c |}{res}        89    6.685393    1.134135          2          9
+{txt}{space 8}dorm {c |}{res}        85    1.564706    1.322399          0          4
+{txt}{hline 13}{c +}{hline 56}
+{space 7}major {c |}{res}        79    1.189873    .8634449          0          2
+{txt}{space 6}natSci {c |}{res}        79    .4810127     .502832          0          1
+{txt}{space 1}stressLevel {c |}{res}        88    6.772727    1.817712          1         10
+{txt}mealsPerWeek {c |}{res}        88    4.409091    3.618714          0         15
+{txt}nextPresid~e {c |}{res}        87    1.034483    1.955602          0          9
+{txt}{hline 13}{c +}{hline 56}
+{space 5}hillary {c |}{res}        87    .3218391      .46989          0          1
+{txt}
+{com}. 
+. *dummy variable if a student participates in any organized sport.
+. gen athlete = 1 if varsityAthlete == 1 | clubAthlete == 1
+{txt}(60 missing values generated)
+
+{com}. replace athlete = 0 if athlete == .
+{txt}(60 real changes made)
+
+{com}. 
+. *FIRST PRES HYPOTHESIS TESTS
+. ttest personalMa~s==2 //significant at .05
+
+{txt}One-sample t test
+{hline 9}{c TT}{hline 68}
+Variable{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[95% Conf. Interval]
+{hline 9}{c +}{hline 68}
+person~s {c |}{res}{col 12}     89{col 22}  2.58427{col 34} .2379952{col 46} 2.245242{col 58} 2.111304{col 70} 3.057235
+{txt}{hline 9}{c BT}{hline 68}
+    mean = mean({res}personalMatchboxHours{txt})                            t = {res}  2.4550
+{txt}Ho: mean = {res}2                                     {txt}degrees of freedom = {res}      88
+
+    {txt}Ha: mean < {res}2                 {txt}Ha: mean != {res}2                 {txt}Ha: mean > {res}2
+ {txt}Pr(T < t) = {res}0.9920         {txt}Pr(|T| > |t|) = {res}0.0161          {txt}Pr(T > t) = {res}0.0080
+{txt}
+{com}. ttest predictedM~s==2 //almost significant at .1 (larger sample size needed)
+
+{txt}One-sample t test
+{hline 9}{c TT}{hline 68}
+Variable{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[95% Conf. Interval]
+{hline 9}{c +}{hline 68}
+predic~s {c |}{res}{col 12}     89{col 22} 2.224719{col 34} .1363024{col 46} 1.285874{col 58} 1.953847{col 70} 2.495592
+{txt}{hline 9}{c BT}{hline 68}
+    mean = mean({res}predictedMatchboxHours{txt})                           t = {res}  1.6487
+{txt}Ho: mean = {res}2                                     {txt}degrees of freedom = {res}      88
+
+    {txt}Ha: mean < {res}2                 {txt}Ha: mean != {res}2                 {txt}Ha: mean > {res}2
+ {txt}Pr(T < t) = {res}0.9486         {txt}Pr(|T| > |t|) = {res}0.1028          {txt}Pr(T > t) = {res}0.0514
+{txt}
+{com}. ttest diff==0  //significant with one-sided test.
+
+{txt}One-sample t test
+{hline 9}{c TT}{hline 68}
+Variable{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[95% Conf. Interval]
+{hline 9}{c +}{hline 68}
+    diff {c |}{res}{col 12}     89{col 22} .3595506{col 34} .2773577{col 46} 2.616587{col 58}-.1916395{col 70} .9107406
+{txt}{hline 9}{c BT}{hline 68}
+    mean = mean({res}diff{txt})                                             t = {res}  1.2963
+{txt}Ho: mean = {res}0                                     {txt}degrees of freedom = {res}      88
+
+    {txt}Ha: mean < {res}0                 {txt}Ha: mean != {res}0                 {txt}Ha: mean > {res}0
+ {txt}Pr(T < t) = {res}0.9009         {txt}Pr(|T| > |t|) = {res}0.1982          {txt}Pr(T > t) = {res}0.0991
+{txt}
+{com}. ttest personalMatchboxHours, by(varsityAthlete) level(99) //significant at .01
+
+{txt}Two-sample t test with equal variances
+{hline 9}{c TT}{hline 68}
+   Group{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[99% Conf. Interval]
+{hline 9}{c +}{hline 68}
+       0 {c |}{res}{col 12}     68{col 22} 2.088235{col 34} .2563806{col 46} 2.114169{col 58} 1.408514{col 70} 2.767957
+       {txt}1 {c |}{res}{col 12}     21{col 22} 4.190476{col 34}  .417584{col 46}  1.91361{col 58} 3.002308{col 70} 5.378645
+{txt}{hline 9}{c +}{hline 68}
+combined {c |}{res}{col 12}     89{col 22}  2.58427{col 34} .2379952{col 46} 2.245242{col 58} 1.957662{col 70} 3.210877
+{txt}{hline 9}{c +}{hline 68}
+    diff {c |}{res}{col 22}-2.102241{col 34} .5167209{col 58}-3.463039{col 70}-.7414423
+{txt}{hline 9}{c BT}{hline 68}
+    diff = mean({res}0{txt}) - mean({res}1{txt})                                      t = {res} -4.0684
+{txt}Ho: diff = 0                                     degrees of freedom = {res}      87
+
+    {txt}Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = {res}0.0001         {txt}Pr(|T| > |t|) = {res}0.0001          {txt}Pr(T > t) = {res}0.9999
+{txt}
+{com}. 
+. 
+. *VAR. PERSONAL HOURS REGRESSIONS- ALL HAVE HIGH P VALUES
+. regress personalMa~s goWithFriend 
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      86
+{txt}{hline 13}{char +}{hline 30}           F(  1,    84) ={res}    1.61
+    {txt}   Model {char |} {res} 7.95928629     1  7.95928629           {txt}Prob > F      = {res} 0.2078
+    {txt}Residual {char |} {res} 414.924435    84   4.9395766           {txt}R-squared     = {res} 0.0188
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0071
+    {txt}   Total {char |} {res} 422.883721    85   4.9751026           {txt}Root MSE      = {res} 2.2225
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+goWithFriend {c |}{col 14}{res}{space 2}-.6144512{col 26}{space 2} .4840555{col 37}{space 1}   -1.27{col 46}{space 3}0.208{col 54}{space 4}-1.577049{col 67}{space 3} .3481463
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.938776{col 26}{space 2} .3175023{col 37}{space 1}    9.26{col 46}{space 3}0.000{col 54}{space 4} 2.307387{col 67}{space 3} 3.570164
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.208
+. regress personalMa~s thirdOfDay
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      75
+{txt}{hline 13}{char +}{hline 30}           F(  1,    73) ={res}    0.21
+    {txt}   Model {char |} {res} .959024896     1  .959024896           {txt}Prob > F      = {res} 0.6473
+    {txt}Residual {char |} {res} 331.707642    73   4.5439403           {txt}R-squared     = {res} 0.0029
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0108
+    {txt}   Total {char |} {res} 332.666667    74   4.4954955           {txt}Root MSE      = {res} 2.1317
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}thirdOfDay {c |}{col 14}{res}{space 2}-.1115145{col 26}{space 2} .2427352{col 37}{space 1}   -0.46{col 46}{space 3}0.647{col 54}{space 4}-.5952851{col 67}{space 3} .3722561
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.258472{col 26}{space 2} .4846606{col 37}{space 1}    6.72{col 46}{space 3}0.000{col 54}{space 4} 2.292544{col 67}{space 3} 4.224399
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.647
+. regress personalMa~s breakfastFreq
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    0.55
+    {txt}   Model {char |} {res} 2.80430846     1  2.80430846           {txt}Prob > F      = {res} 0.4589
+    {txt}Residual {char |} {res} 440.813669    87  5.06682378           {txt}R-squared     = {res} 0.0063
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0051
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res}  2.251
+
+{txt}{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMat~s{col 15}{c |}      Coef.{col 27}   Std. Err.{col 39}      t{col 47}   P>|t|{col 55}     [95% Con{col 68}f. Interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+breakfastFreq {c |}{col 15}{res}{space 2} .2118705{col 27}{space 2} .2847905{col 38}{space 1}    0.74{col 47}{space 3}0.459{col 55}{space 4}-.3541815{col 68}{space 3} .7779225
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2} 2.336691{col 27}{space 2} .4094863{col 38}{space 1}    5.71{col 47}{space 3}0.000{col 55}{space 4} 1.522792{col 68}{space 3} 3.150589
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.459
+. regress personalMa~s firstClass
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    1.17
+    {txt}   Model {char |} {res} 5.89670237     1  5.89670237           {txt}Prob > F      = {res} 0.2820
+    {txt}Residual {char |} {res} 437.721275    87  5.03127902           {txt}R-squared     = {res} 0.0133
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0020
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.2431
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}firstClass {c |}{col 14}{res}{space 2} .2457512{col 26}{space 2} .2270023{col 37}{space 1}    1.08{col 46}{space 3}0.282{col 54}{space 4}-.2054404{col 67}{space 3} .6969427
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  .268134{col 26}{space 2} 2.152604{col 37}{space 1}    0.12{col 46}{space 3}0.901{col 54}{space 4}-4.010399{col 67}{space 3} 4.546667
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.282
+. regress personalMa~s classYear
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      88
+{txt}{hline 13}{char +}{hline 30}           F(  1,    86) ={res}    0.20
+    {txt}   Model {char |} {res} 1.03714286     1  1.03714286           {txt}Prob > F      = {res} 0.6521
+    {txt}Residual {char |} {res} 435.826494    86  5.06774992           {txt}R-squared     = {res} 0.0024
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0092
+    {txt}   Total {char |} {res} 436.863636    87  5.02142111           {txt}Root MSE      = {res} 2.2512
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}classYear {c |}{col 14}{res}{space 2} .1257143{col 26}{space 2}   .27789{col 37}{space 1}    0.45{col 46}{space 3}0.652{col 54}{space 4}-.4267128{col 67}{space 3} .6781413
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.472208{col 26}{space 2} .3941107{col 37}{space 1}    6.27{col 46}{space 3}0.000{col 54}{space 4} 1.688742{col 67}{space 3} 3.255674
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.652
+. regress personalMa~s hoursOfSleep
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    0.13
+    {txt}   Model {char |} {res} .659569746     1  .659569746           {txt}Prob > F      = {res} 0.7198
+    {txt}Residual {char |} {res} 442.958408    87  5.09147595           {txt}R-squared     = {res} 0.0015
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0100
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.2564
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+hoursOfSleep {c |}{col 14}{res}{space 2}-.0763351{col 26}{space 2} .2120879{col 37}{space 1}   -0.36{col 46}{space 3}0.720{col 54}{space 4}-.4978828{col 67}{space 3} .3452125
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}   3.0946{col 26}{space 2} 1.437923{col 37}{space 1}    2.15{col 46}{space 3}0.034{col 54}{space 4} .2365724{col 67}{space 3} 5.952628
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.720
+. regress personalMa~s dorm
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      85
+{txt}{hline 13}{char +}{hline 30}           F(  1,    83) ={res}    0.01
+    {txt}   Model {char |} {res} .036939254     1  .036939254           {txt}Prob > F      = {res} 0.9317
+    {txt}Residual {char |} {res} 414.716002    83  4.99657834           {txt}R-squared     = {res} 0.0001
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0120
+    {txt}   Total {char |} {res} 414.752941    84  4.93753501           {txt}Root MSE      = {res} 2.2353
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}dorm {c |}{col 14}{res}{space 2} .0158578{col 26}{space 2} .1844311{col 37}{space 1}    0.09{col 46}{space 3}0.932{col 54}{space 4}-.3509683{col 67}{space 3} .3826838
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.551658{col 26}{space 2}  .376911{col 37}{space 1}    6.77{col 46}{space 3}0.000{col 54}{space 4} 1.801997{col 67}{space 3} 3.301319
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.932
+. regress personalMa~s stressLevel
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      88
+{txt}{hline 13}{char +}{hline 30}           F(  1,    86) ={res}    0.13
+    {txt}   Model {char |} {res} .686281697     1  .686281697           {txt}Prob > F      = {res} 0.7152
+    {txt}Residual {char |} {res} 440.393264    86   5.1208519           {txt}R-squared     = {res} 0.0016
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res}-0.0101
+    {txt}   Total {char |} {res} 441.079545    87  5.06987983           {txt}Root MSE      = {res} 2.2629
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}stressLevel {c |}{col 14}{res}{space 2} .0488615{col 26}{space 2} .1334709{col 37}{space 1}    0.37{col 46}{space 3}0.715{col 54}{space 4}-.2164698{col 67}{space 3} .3141928
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.271347{col 26}{space 2} .9355953{col 37}{space 1}    2.43{col 46}{space 3}0.017{col 54}{space 4} .4114454{col 67}{space 3} 4.131249
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.715
+. 
+. *REGRESSIONS WITH P VALUES UNDER 0.2
+. regress predictedM~s firstClass 
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    2.72
+    {txt}   Model {char |} {res} 4.40792998     1  4.40792998           {txt}Prob > F      = {res} 0.1028
+    {txt}Residual {char |} {res} 141.097688    87  1.62181251           {txt}R-squared     = {res} 0.0303
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0191
+    {txt}   Total {char |} {res} 145.505618    88  1.65347293           {txt}Root MSE      = {res} 1.2735
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}predictedM~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}firstClass {c |}{col 14}{res}{space 2} .2124752{col 26}{space 2} .1288817{col 37}{space 1}    1.65{col 46}{space 3}0.103{col 54}{space 4}-.0436911{col 67}{space 3} .4686416
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .2221997{col 26}{space 2} 1.222152{col 37}{space 1}    0.18{col 46}{space 3}0.856{col 54}{space 4} -2.20696{col 67}{space 3} 2.651359
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.103...so close! 
+. regress diff breakfastFreq
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    2.37
+    {txt}   Model {char |} {res} 15.9909648     1  15.9909648           {txt}Prob > F      = {res} 0.1272
+    {txt}Residual {char |} {res} 586.503417    87  6.74141859           {txt}R-squared     = {res} 0.0265
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0154
+    {txt}   Total {char |} {res} 602.494382    88  6.84652707           {txt}Root MSE      = {res} 2.5964
+
+{txt}{hline 14}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}         diff{col 15}{c |}      Coef.{col 27}   Std. Err.{col 39}      t{col 47}   P>|t|{col 55}     [95% Con{col 68}f. Interval]
+{hline 14}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+breakfastFreq {c |}{col 15}{res}{space 2} .5059353{col 27}{space 2} .3284984{col 38}{space 1}    1.54{col 47}{space 3}0.127{col 55}{space 4}-.1469909{col 68}{space 3} 1.158861
+{txt}{space 8}_cons {c |}{col 15}{res}{space 2}-.2316547{col 27}{space 2} .4723318{col 38}{space 1}   -0.49{col 47}{space 3}0.625{col 55}{space 4}-1.170465{col 68}{space 3} .7071559
+{txt}{hline 14}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.127
+. regress diff goWithFriend
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      86
+{txt}{hline 13}{char +}{hline 30}           F(  1,    84) ={res}    2.50
+    {txt}   Model {char |} {res} 17.2290627     1  17.2290627           {txt}Prob > F      = {res} 0.1178
+    {txt}Residual {char |} {res} 579.526751    84  6.89912799           {txt}R-squared     = {res} 0.0289
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0173
+    {txt}   Total {char |} {res} 596.755814    85  7.02065663           {txt}Root MSE      = {res} 2.6266
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}        diff{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+goWithFriend {c |}{col 14}{res}{space 2}-.9040265{col 26}{space 2} .5720677{col 37}{space 1}   -1.58{col 46}{space 3}0.118{col 54}{space 4}-2.041646{col 67}{space 3} .2335929
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .7959184{col 26}{space 2} .3752313{col 37}{space 1}    2.12{col 46}{space 3}0.037{col 54}{space 4} .0497298{col 67}{space 3} 1.542107
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.118
+. regress predictedM~s varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    1.72
+    {txt}   Model {char |} {res} 2.81374123     1  2.81374123           {txt}Prob > F      = {res} 0.1937
+    {txt}Residual {char |} {res} 142.691877    87  1.64013651           {txt}R-squared     = {res} 0.0193
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0081
+    {txt}   Total {char |} {res} 145.505618    88  1.65347293           {txt}Root MSE      = {res} 1.2807
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}predictedMat~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+varsityAthlete {c |}{col 16}{res}{space 2}-.4187675{col 28}{space 2} .3197208{col 39}{space 1}   -1.31{col 48}{space 3}0.194{col 56}{space 4}-1.054247{col 69}{space 3} .2167122
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.323529{col 28}{space 2}  .155305{col 39}{space 1}   14.96{col 48}{space 3}0.000{col 56}{space 4} 2.014844{col 69}{space 3} 2.632215
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.194
+. 
+. *ACTUALLY STATISTICALLY SIG REGRESSIONS
+. regress personalM~s varsityAthlete 
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}   16.55
+    {txt}   Model {char |} {res} 70.9092941     1  70.9092941           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 372.708683    87  4.28400786           {txt}R-squared     = {res} 0.1598
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1502
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0698
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatc~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+varsityAthlete {c |}{col 16}{res}{space 2} 2.102241{col 28}{space 2} .5167209{col 39}{space 1}    4.07{col 48}{space 3}0.000{col 56}{space 4} 1.075202{col 69}{space 3}  3.12928
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.088235{col 28}{space 2} .2509982{col 39}{space 1}    8.32{col 48}{space 3}0.000{col 56}{space 4} 1.589349{col 69}{space 3} 2.587121
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.0000
+. regress personalM~s varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}   16.55
+    {txt}   Model {char |} {res} 70.9092941     1  70.9092941           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 372.708683    87  4.28400786           {txt}R-squared     = {res} 0.1598
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1502
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0698
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatc~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+varsityAthlete {c |}{col 16}{res}{space 2} 2.102241{col 28}{space 2} .5167209{col 39}{space 1}    4.07{col 48}{space 3}0.000{col 56}{space 4} 1.075202{col 69}{space 3}  3.12928
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.088235{col 28}{space 2} .2509982{col 39}{space 1}    8.32{col 48}{space 3}0.000{col 56}{space 4} 1.589349{col 69}{space 3} 2.587121
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. regress personalMa~s clubAthlete varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  2,    86) ={res}    9.21
+    {txt}   Model {char |} {res} 78.2755149     2  39.1377574           {txt}Prob > F      = {res} 0.0002
+    {txt}Residual {char |} {res} 365.342463    86  4.24816817           {txt}R-squared     = {res} 0.1764
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1573
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0611
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatc~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}clubAthlete {c |}{col 16}{res}{space 2}-.7731121{col 28}{space 2}  .587112{col 39}{space 1}   -1.32{col 48}{space 3}0.191{col 56}{space 4}-1.940252{col 69}{space 3} .3940279
+{txt}varsityAthlete {c |}{col 16}{res}{space 2}  2.02807{col 28}{space 2} .5176287{col 39}{space 1}    3.92{col 48}{space 3}0.000{col 56}{space 4}  .999058{col 69}{space 3} 3.057082
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.236036{col 28}{space 2} .2739915{col 39}{space 1}    8.16{col 48}{space 3}0.000{col 56}{space 4} 1.691359{col 69}{space 3} 2.780713
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. test clubAthlete varsityAthlete
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}clubAthlete = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} varsityAthlete = 0{p_end}
+
+{txt}       F(  2,    86) ={res}    9.21
+{txt}{col 13}Prob > F ={res}    0.0002
+{txt}
+{com}. *p-value here is 0.0002--good! 
+. *although maybe the clubAthlete variable isn't helpful to add in? 
+. regress diff varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}   17.72
+    {txt}   Model {char |} {res} 101.973374     1  101.973374           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 500.521008    87  5.75311504           {txt}R-squared     = {res} 0.1693
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1597
+    {txt}   Total {char |} {res} 602.494382    88  6.84652707           {txt}Root MSE      = {res} 2.3986
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}          diff{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+varsityAthlete {c |}{col 16}{res}{space 2} 2.521008{col 28}{space 2} .5988009{col 39}{space 1}    4.21{col 48}{space 3}0.000{col 56}{space 4} 1.330827{col 69}{space 3}  3.71119
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-.2352941{col 28}{space 2} .2908688{col 39}{space 1}   -0.81{col 48}{space 3}0.421{col 56}{space 4}-.8134273{col 69}{space 3}  .342839
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.000
+. *coef was 2.52, so being a varsity athlete was associated with on average
+. *estimating that you went to the Matchox 2.52 hours more per week than the 
+. *average Swattie
+. *scatter diff varsityAthlete
+. regress diff clubAthlete varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  2,    86) ={res}   10.34
+    {txt}   Model {char |} {res} 116.788944     2  58.3944721           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 485.705438    86  5.64773765           {txt}R-squared     = {res} 0.1938
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1751
+    {txt}   Total {char |} {res} 602.494382    88  6.84652707           {txt}Root MSE      = {res} 2.3765
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}          diff{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}clubAthlete {c |}{col 16}{res}{space 2}-1.096426{col 28}{space 2} .6769512{col 39}{space 1}   -1.62{col 48}{space 3}0.109{col 56}{space 4} -2.44216{col 69}{space 3} .2493085
+{txt}varsityAthlete {c |}{col 16}{res}{space 2} 2.415819{col 28}{space 2} .5968356{col 39}{space 1}    4.05{col 48}{space 3}0.000{col 56}{space 4} 1.229349{col 69}{space 3} 3.602289
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2}-.0256833{col 28}{space 2} .3159173{col 39}{space 1}   -0.08{col 48}{space 3}0.935{col 56}{space 4}-.6537062{col 69}{space 3} .6023396
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val for vars = 0.000, p val for club = 0.109
+. regress personalMa~s gender
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    9.39
+    {txt}   Model {char |} {res} 43.2295928     1  43.2295928           {txt}Prob > F      = {res} 0.0029
+    {txt}Residual {char |} {res} 400.388385    87  4.60216534           {txt}R-squared     = {res} 0.0974
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0871
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.1453
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMa~s{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}gender {c |}{col 14}{res}{space 2}-1.321234{col 26}{space 2} .4310924{col 37}{space 1}   -3.06{col 46}{space 3}0.003{col 54}{space 4}-2.178077{col 67}{space 3}-.4643914
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.415608{col 26}{space 2} .3539574{col 37}{space 1}    9.65{col 46}{space 3}0.000{col 54}{space 4} 2.712079{col 67}{space 3} 4.119137
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.003
+. *coef was -1.32, so being female was associated with going to the matchbox
+. *1.32 hrs less per week
+. regress diff gender
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  1,    87) ={res}    7.85
+    {txt}   Model {char |} {res} 49.8487377     1  49.8487377           {txt}Prob > F      = {res} 0.0063
+    {txt}Residual {char |} {res} 552.645644    87  6.35224878           {txt}R-squared     = {res} 0.0827
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0722
+    {txt}   Total {char |} {res} 602.494382    88  6.84652707           {txt}Root MSE      = {res} 2.5204
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}        diff{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}gender {c |}{col 14}{res}{space 2}-1.418784{col 26}{space 2} .5064691{col 37}{space 1}   -2.80{col 46}{space 3}0.006{col 54}{space 4}-2.425446{col 67}{space 3}-.4121218
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.252269{col 26}{space 2}  .415847{col 37}{space 1}    3.01{col 46}{space 3}0.003{col 54}{space 4} .4257276{col 67}{space 3}  2.07881
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *p val = 0.006
+. * being female was associated with -1.42 more of a difference between 
+. *personal and predicted hours- i.e. females estimated higher predicted avg
+. *Matchbox hours relative to personal hours than males
+. 
+. regress personalMa~s gender varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  2,    86) ={res}   12.33
+    {txt}   Model {char |} {res}  98.856858     2   49.428429           {txt}Prob > F      = {res} 0.0000
+    {txt}Residual {char |} {res} 344.761119    86  4.00885023           {txt}R-squared     = {res} 0.2228
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.2048
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0022
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatc~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}gender {c |}{col 16}{res}{space 2}-1.076414{col 28}{space 2}  .407678{col 39}{space 1}   -2.64{col 48}{space 3}0.010{col 56}{space 4}-1.886851{col 69}{space 3}-.2659769
+{txt}varsityAthlete {c |}{col 16}{res}{space 2} 1.886657{col 28}{space 2} .5064761{col 39}{space 1}    3.73{col 48}{space 3}0.000{col 56}{space 4} .8798155{col 69}{space 3} 2.893498
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.816398{col 28}{space 2} .3674364{col 39}{space 1}    7.66{col 48}{space 3}0.000{col 56}{space 4} 2.085958{col 69}{space 3} 3.546837
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. test gender varsityAthlete
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}gender = 0{p_end}
+{p 0 7}{space 1}{text:( 2)}{space 1} varsityAthlete = 0{p_end}
+
+{txt}       F(  2,    86) ={res}   12.33
+{txt}{col 13}Prob > F ={res}    0.0000
+{txt}
+{com}. *F test p val = 0.0000 so yes jointly significant
+. 
+. regress diff female varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  2,    86) ={res}   10.38
+    {txt}   Model {char |} {res} 117.144257     2  58.5721285           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 485.350125    86   5.6436061           {txt}R-squared     = {res} 0.1944
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1757
+    {txt}   Total {char |} {res} 602.494382    88  6.84652707           {txt}Root MSE      = {res} 2.3756
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}          diff{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}female {c |}{col 16}{res}{space 2}-.8440089{col 28}{space 2}  .514778{col 39}{space 1}   -1.64{col 48}{space 3}0.105{col 56}{space 4}-1.867354{col 69}{space 3} .1793358
+{txt}varsityAthlete {c |}{col 16}{res}{space 2} 2.401618{col 28}{space 2} .5975282{col 39}{space 1}    4.02{col 48}{space 3}0.000{col 56}{space 4} 1.213771{col 69}{space 3} 3.589464
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} .2860055{col 28}{space 2} .4290537{col 39}{space 1}    0.67{col 48}{space 3}0.507{col 56}{space 4}-.5669251{col 69}{space 3} 1.138936
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. regress personalM~s female varsityAthlete
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  2,    86) ={res}   10.26
+    {txt}   Model {char |} {res} 85.4717195     2  42.7358597           {txt}Prob > F      = {res} 0.0001
+    {txt}Residual {char |} {res} 358.146258    86  4.16449137           {txt}R-squared     = {res} 0.1927
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1739
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0407
+
+{txt}{hline 15}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatc~s{col 16}{c |}      Coef.{col 28}   Std. Err.{col 40}      t{col 48}   P>|t|{col 56}     [95% Con{col 69}f. Interval]
+{hline 15}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}female {c |}{col 16}{res}{space 2}-.8269104{col 28}{space 2} .4422039{col 39}{space 1}   -1.87{col 48}{space 3}0.065{col 56}{space 4}-1.705983{col 69}{space 3} .0521619
+{txt}varsityAthlete {c |}{col 16}{res}{space 2} 1.985269{col 28}{space 2} .5132879{col 39}{space 1}    3.87{col 48}{space 3}0.000{col 56}{space 4} .9648864{col 69}{space 3} 3.005652
+{txt}{space 9}_cons {c |}{col 16}{res}{space 2} 2.598974{col 28}{space 2} .3685652{col 39}{space 1}    7.05{col 48}{space 3}0.000{col 56}{space 4} 1.866291{col 69}{space 3} 3.331657
+{txt}{hline 15}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. 
+. *testing interaction variables
+. gen femaleVarsityAthlete = female*varsityAthlete
+{txt}(5 missing values generated)
+
+{com}. 
+. regress personalM~s female varsityAthlete femaleVarsityAthlete 
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}      89
+{txt}{hline 13}{char +}{hline 30}           F(  3,    85) ={res}    6.77
+    {txt}   Model {char |} {res} 85.5549406     3  28.5183135           {txt}Prob > F      = {res} 0.0004
+    {txt}Residual {char |} {res} 358.063037    85  4.21250632           {txt}R-squared     = {res} 0.1929
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.1644
+    {txt}   Total {char |} {res} 443.617978    88  5.04111338           {txt}Root MSE      = {res} 2.0524
+
+{txt}{hline 21}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}personalMatchboxHo~s{col 22}{c |}      Coef.{col 34}   Std. Err.{col 46}      t{col 54}   P>|t|{col 62}     [95% Con{col 75}f. Interval]
+{hline 21}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 14}female {c |}{col 22}{res}{space 2}-.7912088{col 34}{space 2} .5121692{col 45}{space 1}   -1.54{col 54}{space 3}0.126{col 62}{space 4}-1.809538{col 75}{space 3} .2271207
+{txt}{space 6}varsityAthlete {c |}{col 22}{res}{space 2} 2.059441{col 34}{space 2} .7382239{col 45}{space 1}    2.79{col 54}{space 3}0.007{col 62}{space 4} .5916536{col 75}{space 3} 3.527228
+{txt}femaleVarsityAthlete {c |}{col 22}{res}{space 2}-.1451548{col 34}{space 2} 1.032726{col 45}{space 1}   -0.14{col 54}{space 3}0.889{col 62}{space 4}-2.198491{col 75}{space 3} 1.908181
+{txt}{space 15}_cons {c |}{col 22}{res}{space 2} 2.576923{col 34}{space 2} .4025164{col 45}{space 1}    6.40{col 54}{space 3}0.000{col 62}{space 4} 1.776613{col 75}{space 3} 3.377234
+{txt}{hline 21}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. *R^2 = .19
+. 
+. 
+. 
+{txt}end of do-file
+
+{com}. do "/var/folders/_c/rq7t23kd0n7cp7k_gclspnd40000gn/T//SD75644.000000"
+{txt}
+{com}. * Do file for PS3
+. * Daniel Banko
+. /*------------------------------------------------------------------------------
+>                 Date Created: Oct 21, 2015
+> ------------------------------------------------------------------------------*/
+. 
+{txt}end of do-file
+
+{com}. do "/Users/Banjodan2/Desktop/Personal/PS3Stata.do"
+{txt}
+{com}. clear
+{txt}
+{com}. set more off
+{txt}
+{com}. cap log close
+{smcl}
+{com}{sf}{ul off}
