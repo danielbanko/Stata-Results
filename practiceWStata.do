@@ -5,7 +5,7 @@ set more off
 local projectpath "/Users/Banjodan2/Documents/Dropbox/StataPractice"
 cd `projectpath'
 capture log using "PracticeStataLog", replace
-/*************************************************
+/*************************************************\
 * Practice with Stata--hospital noshow rates data downloaded from internet***/
 * Date modified:
 * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
@@ -46,6 +46,26 @@ save "PracticeDataCleaned.dta", replace
 eststo: regress _noshow sms_received age
 esttab using "test.tex", replace se r2 nocons booktabs
 eststo clear
+
+//Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
+* gen var2=regexr(var1,"[.\}\)\*a-zA-Z]+","")
+* destring var2, replace
+
+* or to extract strings:
+* gen var2=regexr(var1,"[.0-9]+","")
+
+* 1. -by:-. 
+
+* 2. -foreach- or -forval- with varlists or numlists. 
+
+* 3. -merge-. I rarely use it but -merge-masters have real leverage
+* in file manipulations. 
+
+* 4. -assert-. My candidate for the most underestimated command in
+* Stata (second is -count-).  
+
+* 5. -reshape-. 
+
 
 translate PracticeStataLog.smcl PracticeStataLogPDF.pdf, replace
 
