@@ -2,18 +2,23 @@
 capture log close
 clear
 set more off
-local projectpath "/Users/Banjodan2/Documents/Dropbox/StataPractice"
-cd `projectpath'
+set trace off
+pause on
+local projectpath /Users/Banjodan2/Dropbox/Stata
+cd "`projectpath'"
 capture log using "PracticeStataLog", replace
 /*************************************************\
-* Practice with Stata--hospital noshow rates data downloaded from internet***/
+* Practice with Stata: data downloaded from internet***/
 * Date modified:
 * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
 
 label define binaryCode 0 "No" 1 "Yes"
 
-import delimited /`projectpath'/datasets/KaggleV2-May-2016.csv
-//clean the data
+import delimited datasets/KaggleV2-May-2016.csv //hospital no-show rates
+//use
+
+
+//clean the data:
 drop if age < 0
 foreach var of varlist noshow {
 	encode `var', gen(_`var')
@@ -44,7 +49,7 @@ save "PracticeDataCleaned.dta", replace
 
 *tabbout eststo esttab estadd
 eststo: regress _noshow sms_received age
-esttab using "test.tex", replace se r2 nocons booktabs
+esttab using "output/tables/table1_regress_noshow_sms.tex", replace se r2 nocons booktabs
 eststo clear
 
 //Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
@@ -66,7 +71,17 @@ eststo clear
 
 * 5. -reshape-. 
 
+*other stata commands to try:
+/* margins
+svtmat
+coeffplot
+collapse
+bootstrap
+ */
 
+//snapshot or preserve
 translate PracticeStataLog.smcl PracticeStataLogPDF.pdf, replace
+
+/* shell echo -e "It's Done" | mail -s "STATA finished" "daniel.banko-ferran@cfpb.gov" */
 
 //leave blank
