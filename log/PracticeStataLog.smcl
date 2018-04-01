@@ -1,0 +1,323 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. /*************************************************\
+> * Practice with Stata: data downloaded from internet***/
+. * Date modified:
+. * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
+. 
+. label define binaryCode 0 "No" 1 "Yes"
+{txt}
+{com}. 
+. import delimited datasets/KaggleV2-May-2016.csv //hospital no-show rates
+{res}{text}(14 vars, 110527 obs)
+
+{com}. //use
+. 
+. 
+. //clean the data:
+. drop if age < 0
+{txt}(1 observation deleted)
+
+{com}. foreach var of varlist noshow {c -(}
+{txt}  2{com}.         encode `var', gen(_`var')
+{txt}  3{com}.         replace _`var' = _`var' - 1
+{txt}  4{com}.         label values _`var' binaryCode
+{txt}  5{com}. {c )-}
+{txt}(110526 real changes made)
+
+{com}. 
+. foreach var of varlist scholarship hipertension diabetes alcoholism handcap sms_received {c -(}
+{txt}  2{com}.         label values `var' binaryCode
+{txt}  3{com}. {c )-}
+{txt}
+{com}. 
+. numlabel, add
+{res}{txt}
+{com}. 
+. local categoricalVars "gender scholarship hipertension diabetes alcoholism handcap sms_received noshow neighbourhood"
+{txt}
+{com}. local size : word count `categoricalVars'
+{txt}
+{com}. 
+. di "We have `size' categorical variables."
+{res}We have 9 categorical variables.
+{txt}
+{com}. 
+. *summarizing the categorical vars:
+. foreach var of varlist `categoricalVars' {c -(}
+{txt}  2{com}.         sum `var'
+{txt}  3{com}.         tabulate `var', missing plot
+{txt}  4{com}. {c )-}
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 6}gender {c |}{res}         0
+
+     {txt}Gender {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+          F {c |}{res}     71,839 {txt}{c |}*****************************************************
+          M {c |}{res}     38,687 {txt}{c |}*****************************
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 1}scholarship {c |}{res}    110526    .0982665     .297676          0          1
+
+{txt}Scholarship {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}     99,665 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     10,861 {txt}{c |}******
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+hipertension {c |}{res}    110526    .1972477    .3979227          0          1
+
+{txt}Hipertensio {c |}
+          n {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}     88,725 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     21,801 {txt}{c |}*************
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 4}diabetes {c |}{res}    110526    .0718654    .2582662          0          1
+
+   {txt}Diabetes {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}    102,583 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      7,943 {txt}{c |}****
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 2}alcoholism {c |}{res}    110526    .0304001    .1716863          0          1
+
+ {txt}Alcoholism {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}    107,166 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      3,360 {txt}{c |}**
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 5}handcap {c |}{res}    110526    .0222482    .1615434          0          4
+
+    {txt}Handcap {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}    108,285 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}      2,042 {txt}{c |}*
+          2 {c |}{res}        183 {txt}{c |}
+          3 {c |}{res}         13 {txt}{c |}
+          4 {c |}{res}          3 {txt}{c |}
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+sms_received {c |}{res}    110526    .3210285    .4668738          0          1
+
+{txt}SMS_receive {c |}
+          d {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      0. No {c |}{res}     75,044 {txt}{c |}*****************************************************
+     1. Yes {c |}{res}     35,482 {txt}{c |}*************************
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 6}noshow {c |}{res}         0
+
+    {txt}No-show {c |}      Freq.
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+         No {c |}{res}     88,207 {txt}{c |}*****************************************************
+        Yes {c |}{res}     22,319 {txt}{c |}*************
+{hline 12}{c +}{hline 12}{c +}{hline 53}
+      Total {c |}{res}    110,526 
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+neighbourh~d {c |}{res}         0
+
+               {txt}Neighbourhood {c |}      Freq.
+{hline 29}{c +}{hline 12}{c +}{hline 36}
+                   AEROPORTO {c |}{res}          8 {txt}{c |}
+                  ANDORINHAS {c |}{res}      2,262 {txt}{c |}***********
+           ANTÌ?NIO HONÌ?RIO {c |}{res}        271 {txt}{c |}*
+         ARIOVALDO FAVALESSA {c |}{res}        282 {txt}{c |}*
+              BARRO VERMELHO {c |}{res}        423 {txt}{c |}**
+                  BELA VISTA {c |}{res}      1,907 {txt}{c |}*********
+              BENTO FERREIRA {c |}{res}        858 {txt}{c |}****
+                   BOA VISTA {c |}{res}        312 {txt}{c |}*
+                      BONFIM {c |}{res}      2,773 {txt}{c |}*************
+                  CARATOÌ?RA {c |}{res}      2,565 {txt}{c |}************
+                      CENTRO {c |}{res}      3,334 {txt}{c |}****************
+                     COMDUSA {c |}{res}        310 {txt}{c |}*
+                   CONQUISTA {c |}{res}        849 {txt}{c |}****
+                CONSOLAÌ?Ì?O {c |}{res}      1,376 {txt}{c |}******
+                  CRUZAMENTO {c |}{res}      1,398 {txt}{c |}*******
+                    DA PENHA {c |}{res}      2,217 {txt}{c |}**********
+                  DE LOURDES {c |}{res}        305 {txt}{c |}*
+                   DO CABRAL {c |}{res}        560 {txt}{c |}***
+                  DO MOSCOSO {c |}{res}        413 {txt}{c |}**
+                   DO QUADRO {c |}{res}        849 {txt}{c |}****
+             ENSEADA DO SUÌ? {c |}{res}        235 {txt}{c |}*
+                  ESTRELINHA {c |}{res}        538 {txt}{c |}***
+                FONTE GRANDE {c |}{res}        682 {txt}{c |}***
+            FORTE SÌ?O JOÌ?O {c |}{res}      1,889 {txt}{c |}*********
+                   FRADINHOS {c |}{res}        258 {txt}{c |}*
+                  GOIABEIRAS {c |}{res}        700 {txt}{c |}***
+             GRANDE VITÌ?RIA {c |}{res}      1,071 {txt}{c |}*****
+                    GURIGICA {c |}{res}      2,018 {txt}{c |}*********
+                       HORTO {c |}{res}        175 {txt}{c |}*
+           ILHA DAS CAIEIRAS {c |}{res}      1,071 {txt}{c |}*****
+         ILHA DE SANTA MARIA {c |}{res}      1,885 {txt}{c |}*********
+                 ILHA DO BOI {c |}{res}         35 {txt}{c |}
+               ILHA DO FRADE {c |}{res}         10 {txt}{c |}
+           ILHA DO PRÌ?NCIPE {c |}{res}      2,266 {txt}{c |}***********
+ILHAS OCEÌ?NICAS DE TRINDADE {c |}{res}          2 {txt}{c |}
+                 INHANGUETÌ? {c |}{res}      1,057 {txt}{c |}*****
+                    ITARARÌ? {c |}{res}      3,514 {txt}{c |}****************
+                      JABOUR {c |}{res}      2,509 {txt}{c |}************
+              JARDIM CAMBURI {c |}{res}      7,717 {txt}{c |}************************************
+             JARDIM DA PENHA {c |}{res}      3,877 {txt}{c |}******************
+           JESUS DE NAZARETH {c |}{res}      2,853 {txt}{c |}*************
+                JOANA Då«ARC {c |}{res}      1,427 {txt}{c |}*******
+                 JUCUTUQUARA {c |}{res}        694 {txt}{c |}***
+                 MARIA ORTIZ {c |}{res}      5,805 {txt}{c |}***************************
+                    MARUÌ?PE {c |}{res}      1,902 {txt}{c |}*********
+               MATA DA PRAIA {c |}{res}        644 {txt}{c |}***
+                  MONTE BELO {c |}{res}        824 {txt}{c |}****
+           MORADA DE CAMBURI {c |}{res}         96 {txt}{c |}
+             MÌ?RIO CYPRESTE {c |}{res}        371 {txt}{c |}**
+                    NAZARETH {c |}{res}        135 {txt}{c |}*
+              NOVA PALESTINA {c |}{res}      2,264 {txt}{c |}***********
+           PARQUE INDUSTRIAL {c |}{res}          1 {txt}{c |}
+              PARQUE MOSCOSO {c |}{res}        802 {txt}{c |}****
+                     PIEDADE {c |}{res}        452 {txt}{c |}**
+           PONTAL DE CAMBURI {c |}{res}         69 {txt}{c |}
+              PRAIA DO CANTO {c |}{res}      1,035 {txt}{c |}*****
+               PRAIA DO SUÌ? {c |}{res}      1,288 {txt}{c |}******
+                  REDENÌ?Ì?O {c |}{res}      1,553 {txt}{c |}*******
+                  REPÌ?BLICA {c |}{res}        835 {txt}{c |}****
+                RESISTÌ?NCIA {c |}{res}      4,431 {txt}{c |}*********************
+                      ROMÌ?O {c |}{res}      2,214 {txt}{c |}**********
+              SANTA CECÌ?LIA {c |}{res}        448 {txt}{c |}**
+                 SANTA CLARA {c |}{res}        506 {txt}{c |}**
+                SANTA HELENA {c |}{res}        178 {txt}{c |}*
+                SANTA LUÌ?ZA {c |}{res}        428 {txt}{c |}**
+                SANTA LÌ?CIA {c |}{res}        438 {txt}{c |}**
+                SANTA MARTHA {c |}{res}      3,131 {txt}{c |}***************
+                SANTA TEREZA {c |}{res}      1,332 {txt}{c |}******
+                SANTO ANDRÌ? {c |}{res}      2,571 {txt}{c |}************
+              SANTO ANTÌ?NIO {c |}{res}      2,746 {txt}{c |}*************
+               SANTOS DUMONT {c |}{res}      1,276 {txt}{c |}******
+                 SANTOS REIS {c |}{res}        547 {txt}{c |}***
+           SEGURANÌ?A DO LAR {c |}{res}        145 {txt}{c |}*
+                SOLON BORGES {c |}{res}        469 {txt}{c |}**
+               SÌ?O BENEDITO {c |}{res}      1,439 {txt}{c |}*******
+            SÌ?O CRISTÌ?VÌ?O {c |}{res}      1,836 {txt}{c |}*********
+                  SÌ?O JOSÌ? {c |}{res}      1,977 {txt}{c |}*********
+                  SÌ?O PEDRO {c |}{res}      2,448 {txt}{c |}***********
+                  TABUAZEIRO {c |}{res}      3,132 {txt}{c |}***************
+              UNIVERSITÌ?RIO {c |}{res}        152 {txt}{c |}*
+                  VILA RUBIM {c |}{res}        851 {txt}{c |}****
+{hline 29}{c +}{hline 12}{c +}{hline 36}
+                       Total {c |}{res}    110,526 
+{txt}
+{com}. 
+. notes gender: there is no significant difference between the no-show rates of males and females
+{res}{txt}
+{com}. 
+. save "PracticeDataCleaned.dta", replace
+{txt}file PracticeDataCleaned.dta saved
+
+{com}. 
+. *tabbout eststo esttab estadd
+. eststo: regress _noshow sms_received age
+
+      {txt}Source {c |}       SS       df       MS              Number of obs ={res}  110526
+{txt}{hline 13}{char +}{hline 30}           F(  2,110523) ={res} 1117.39
+    {txt}   Model {char |} {res} 353.020515     2  176.510258           {txt}Prob > F      = {res} 0.0000
+    {txt}Residual {char |} {res} 17459.0059110523  .157967173           {txt}R-squared     = {res} 0.0198
+{txt}{hline 13}{char +}{hline 30}           Adj R-squared = {res} 0.0198
+    {txt}   Total {char |} {res} 17812.0264110525  .161158348           {txt}Root MSE      = {res} .39745
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     _noshow{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+sms_received {c |}{col 14}{res}{space 2} .1093829{col 26}{space 2} .0025609{col 37}{space 1}   42.71{col 46}{space 3}0.000{col 54}{space 4} .1043636{col 67}{space 3} .1144022
+{txt}{space 9}age {c |}{col 14}{res}{space 2}-.0010759{col 26}{space 2} .0000517{col 37}{space 1}  -20.80{col 46}{space 3}0.000{col 54}{space 4}-.0011773{col 67}{space 3}-.0009745
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  .206722{col 26}{space 2} .0023973{col 37}{space 1}   86.23{col 46}{space 3}0.000{col 54}{space 4} .2020233{col 67}{space 3} .2114208
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}({res}est2{txt} stored)
+
+{com}. esttab using "output/tables/table1_regress_noshow_sms.tex", replace se r2 nocons booktabs
+{res}{txt}(output written to {browse  `"output/tables/table1_regress_noshow_sms.tex"'})
+
+{com}. eststo clear
+{txt}
+{com}. 
+. //Great way to turn a string of numbers into integer values and remove unwanted characters from a variable:
+. * gen var2=regexr(var1,"[.\{c )-}\)\*a-zA-Z]+","")
+. * destring var2, replace
+. 
+. * or to extract strings:
+. * gen var2=regexr(var1,"[.0-9]+","")
+. 
+. * 1. -by:-. 
+. 
+. * 2. -foreach- or -forval- with varlists or numlists. 
+. 
+. * 3. -merge-. I rarely use it but -merge-masters have real leverage
+. * in file manipulations. 
+. 
+. * 4. -assert-. My candidate for the most underestimated command in
+. * Stata (second is -count-).  
+. 
+. * 5. -reshape-. 
+. 
+. *other stata commands to try:
+. /* margins
+> svtmat
+> coeffplot
+> collapse */
+. 
+. //snapshot or preserve
+. translate PracticeStataLog.smcl PracticeStataLogPDF.pdf, replace
+{txt}
+{com}. 
+. /* shell echo -e "It's Done" | mail -s "STATA finished" "daniel.banko-ferran@cfpb.gov" */
+. 
+. //leave blank
+. 
+. 
+{txt}end of do-file
+
+{com}. help decoeff
+
+. help plotcoeff
+
+. ssc install coefplot
+{txt}{err}host not found
+{hilite:http://fmwww.bc.edu/repec/bocode/c/} either
+  1)  is not a valid URL, or
+  2)  could not be contacted, or
+  3)  is not a Stata download site (has no stata.toc file).
+{txt}{search r(631):r(631);}
+
+{com}. ssc install coefplot
+{txt}checking {hilite:coefplot} consistency and verifying not already installed...
+installing into /Users/Banjodan2/Library/Application Support/Stata/ado/plus/...
+installation complete.
+
+{com}. help coefplot
+
+. 

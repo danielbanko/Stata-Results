@@ -1,0 +1,141 @@
+All about STATA
+
+Stored Results:
+r() - general commands, type: "return list, all" to see all stored results
+e() - estimation commands, type: "ereturn list, all"
+s() parsing commands, stores macros
+n() - not r e s (such as generate and replace) explicitly state where the result is to go
+c() - system commands
+
+System Variables:
+_cons: always equal to 1 directly, refers to regression intercept indirectly
+_n: number of current observations
+_N: Total number of observations in dataset
+_pi: value of pi
+_rc: returns value of return code from most recent capture command
+_se: standard error
+_b or _coef: contains the value of the coefficient on varname from most recent model
+
+Macros:
+global: accessed across all of stata.
+local: accessed only in current stata program (or .do file) Equivalent to global macro with a '_' (underscore) in front.
+define global with 'global "varname"' and local with 'local "varname"'
+access contents of global macro with $macro and access contents of local macro with 'macro'
+tempvar: assigns names to the specified local macro names that may be used as temporary variable in dataset. Equivalent to local a : tempvar where tempvar is interpreted as an extended macro function
+typing local ++x is equivalent to typing local x = `x' + 1
+
+
+Example:
+. local string "a or b or c or d"
+. global newstr : subinstr local string "c" "sand"
+. display "$newstr"
+a or b or sand or d
+. local string2 : subinstr global newstr "or" "and", all count(local n)
+. display "`string2'"
+a and b and sand and d
+. display "`n'"
+3
+. local string3: subinstr local string2 "and" "x", all word
+. display "`string3'"
+a x b x sand x d
+
+Factor variables:
+factor variables are extensions of existing variables, such as indicator variables.
+i. is an indicaor variable 
+COnsider a variable named group that takes on the values 1,2, and 3. WHen we type "list group i.group" we see a table of variables called group 1b.group 2.group and 3.group. There are no variables named 1b.group 2.group, and 3.group in the data; there is only a variable named group. These other variables are called virtual variables
+The b is a marker indicating vase value. 1b.group is a virtaul variable equal to 0. 
+
+
+group(varlist) creates one variable taking on values 1, 2, ... for the groups formed by varlist.
+
+
+tab1 TAB1 IS VERY HELPFUL!
+tab2
+
+Three-way crosstabs: bysort studentstatus: tab gender major, column row
+
+crosstabs = conteingency tables
+tabstat = gets you descriptive statistics
+
+//beep
+//codebook
+
+Sets obs # to arbitrarily increase number of observations 
+
+exploring data: crosstabs (test for associations)
+for categorical data, use frequencies
+	for nominal data use chi2, lrchi2, V
+	for ordinal data use gamma and taub
+
+for continuous data use descriptive statistics (tabstat)
+
+indexing: creating ids
+using _n, can create unique identifier for each case in data
+gen var = _n
+
+using _N you can create a variable with the total number of cases in dataset
+
+indexing: creating ids by categories:
+sort var
+by var: gen idvar = _n
+
+TAGGING THE FIRST OBSERVATION OF A GROUP:
+by rep78, sort: gen nvals = _n == 1 
+
+
+USEFUL STATA COMMANDS:
+gsort (ascending and descending sort)
+list
+ds
+pwd
+codebook
+describe
+run
+lookfor
+browse(?)
+inspect(?)
+assert(?)
+capture noisilystata 
+
+for debugging and error handling and troubleshooting: set trace on
+recoding age into three groups: recode age (18 19 = 1 "18 to 19") (20/29 = 2 "20 to 29") (else=.), generate(agegroups) label(agegroups)
+	CAN ALSO USE EGEN
+table gender, contents(freq mean age mean score)
+
+The main approaches to econometrics these days are MLE, PCA, and OLS
+
+get first occurence of an observation:  by id (time), sort: gen byte first = sum(state == 1) == 1  & sum(state[_n - 1] == 1) == 0  
+by id, sort: egen firsttime = min(cond(state == 1, time, .))
+
+template:									     ///
+capture log close																
+clear all
+set more off
+set trace off
+local projectpath "/home/cfpb/banko-ferrand/#####"
+cd `projectpath'
+
+use "`projectpath'/######.dta"
+capture log using "######", replace
+
+/*CODE HERE */
+
+capture log close
+translator set smcl2pdf pagesize custom
+translator set smcl2pdf pagewidth 11.0
+translator set smcl2pdf pageheight 8.5
+translate ####.smcl #####.pdf, replace
+//leave blank
+
+The best way to avoid problems is to use capture sparinglyand always check for a nonzero return code afterwards for signs of problems.This is done using the system variable _rc
+
+If you're using syntax commands and you get an invalid syntax error mes-sage, it is often worth checking whether any of the syntax commands are re-sponsible (e.g. by displaying some text immediately before and after them).Being alert to this kind of issue will save you a good deal of time debuggingyour do les.
+
+It is also a good idea to get in the habit of alwaysreferring to scalars in expressions using the scalar() function. This avoids anyconfusion.
+
+Automatically restoring data after a do file terminates is desirable behaviourto minimise the damage caused by errors, but it can cause hours of head-scratching if you don't realise what is happening. To avoid the automatic re-store, you can preserve the data outside the do le, or use the pause commandto pause execution of the do le at a specied point. Alternatively, you can usethe snapshot command instead of preserve.
+
+import, infile, infix insheet
+
+when import delimited didnt work for me, I used:
+insheet using "brownbagdata11292017.csv", delimter("")

@@ -1,0 +1,157 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}/Users/Banjodan2/Desktop/PS3Stata.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}21 Oct 2015, 12:15:35
+{txt}
+{com}. * Do file for PS3
+. * Daniel Banko
+. /*------------------------------------------------------------------------------
+>                 Date Created: Oct 21, 2015
+> ------------------------------------------------------------------------------*/
+. describe
+
+{txt}Contains data from {res}/Users/Banjodan2/Desktop/2003CPSWorkers.dta
+{txt}  obs:{res}        25,586                          
+{txt} vars:{res}            22                          9 Oct 2012 13:23
+{txt} size:{res}     1,816,606                          
+{txt}{hline}
+              storage   display    value
+variable name   type    format     label      variable label
+{hline}
+{p 0 48}{res}{bind:_child6        }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Num of kids in fam under 6{p_end}
+{p 0 48}{bind:year           }{txt}{bind: int     }{bind:{txt}%8.0g     }{space 1}{bind:         }{bind:  }{res}{res}Year{p_end}
+{p 0 48}{bind:hours          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:fhrslyr  }{bind:  }{res}{res}Hours worked per week last year{p_end}
+{p 0 48}{bind:weeks          }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:fwkslyr  }{bind:  }{res}{res}Weeks worked last year{p_end}
+{p 0 48}{bind:faminc         }{txt}{bind: long    }{bind:{txt}%12.0g    }{space 1}{bind:         }{bind:  }{res}{res}Total family income{p_end}
+{p 0 48}{bind:age            }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:fage     }{bind:  }{res}{res}Age of person{p_end}
+{p 0 48}{bind:inc_wag        }{txt}{bind: long    }{bind:{txt}%12.0g    }{space 1}{bind:         }{bind:  }{res}{res}Income: wage & salary{p_end}
+{p 0 48}{bind:male           }{txt}{bind: byte    }{bind:{txt}%8.0g     }{space 1}{bind:genname  }{bind:  }{res}{res}Sex{p_end}
+{p 0 48}{bind:edyrs          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Years of schooling{p_end}
+{p 0 48}{bind:white          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}White/Caucasian{p_end}
+{p 0 48}{bind:black          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Black/African-American{p_end}
+{p 0 48}{bind:hispoth        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Hispanic or other{p_end}
+{p 0 48}{bind:single         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Single{p_end}
+{p 0 48}{bind:nevmar         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Never married{p_end}
+{p 0 48}{bind:taxrate        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Federal + state income tax rate{p_end}
+{p 0 48}{bind:wkwage         }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Weekly wage (2003 dollars){p_end}
+{p 0 48}{bind:nkids          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Number of resident children under 18{p_end}
+{p 0 48}{bind:parttime       }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Part-time worker{p_end}
+{p 0 48}{bind:married        }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Married{p_end}
+{p 0 48}{bind:exper          }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}Experience{p_end}
+{p 0 48}{bind:tot_hours      }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{p 0 48}{bind:hourly_wage    }{txt}{bind: float   }{bind:{txt}%9.0g     }{space 1}{bind:         }{bind:  }{res}{res}{p_end}
+{txt}{hline}
+Sorted by:  
+
+{com}. sum
+
+{txt}    Variable {c |}       Obs        Mean    Std. Dev.       Min        Max
+{hline 13}{c +}{hline 56}
+{space 5}_child6 {c |}{res}     25586    .2561557    .5741876          0          4
+{txt}{space 8}year {c |}{res}     25586        2003           0       2003       2003
+{txt}{space 7}hours {c |}{res}     25586     40.6645    10.31514          1         99
+{txt}{space 7}weeks {c |}{res}     25586    48.41421     9.78223          1         52
+{txt}{space 6}faminc {c |}{res}     25586    77289.76    66967.52         50     886891
+{txt}{hline 13}{c +}{hline 56}
+{space 9}age {c |}{res}     25586    43.21191    10.51703         19         65
+{txt}{space 5}inc_wag {c |}{res}     25586    43298.71    47662.41         15     562913
+{txt}{space 8}male {c |}{res}     25586    .5211444    .4995625          0          1
+{txt}{space 7}edyrs {c |}{res}     25586    13.57938    2.426736          2         18
+{txt}{space 7}white {c |}{res}     25586      .78285    .4123136          0          1
+{txt}{hline 13}{c +}{hline 56}
+{space 7}black {c |}{res}     25586    .0708981    .2566596          0          1
+{txt}{space 5}hispoth {c |}{res}     25586    .0965372    .2953323          0          1
+{txt}{space 6}single {c |}{res}     25586    .2205894    .4146522          0          1
+{txt}{space 6}nevmar {c |}{res}     25586    .1078715    .3102241          0          1
+{txt}{space 5}taxrate {c |}{res}     25586    24.20101    8.718095          0      70.06
+{txt}{hline 13}{c +}{hline 56}
+{space 6}wkwage {c |}{res}     25586    803.0641    531.2441         15   2288.461
+{txt}{space 7}nkids {c |}{res}     25586    .8737591    1.104475          0          7
+{txt}{space 4}parttime {c |}{res}     25586    .1942469    .3956275          0          1
+{txt}{space 5}married {c |}{res}     25586    .7647151    .4241851          0          1
+{txt}{space 7}exper {c |}{res}     25586    29.63253    10.78096          5         59
+{txt}{hline 13}{c +}{hline 56}
+{space 3}tot_hours {c |}{res}     25586     1994.54    651.9576          1       5148
+{txt}{space 1}hourly_wage {c |}{res}     25586    22.66521    67.69504       5.15       6320
+{txt}
+{com}. ci hourly_wage if black==1 & male==0, level(95)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Err.       [95% Conf. Interval]
+{hline 13}{c +}{hline 63}
+ hourly_wage {c |}{col 16}{res}      1018{col 29} 17.21997{col 41} .7597719{col 57} 15.72907{col 69} 18.71087{txt}
+
+{com}. *95% ci = [15.73, 18.71]
+. *
+. ci hourly_wage if black==1 & male==0, level(90)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Err.       [90% Conf. Interval]
+{hline 13}{c +}{hline 63}
+ hourly_wage {c |}{col 16}{res}      1018{col 29} 17.21997{col 41} .7597719{col 57} 15.96911{col 69} 18.47082{txt}
+
+{com}. *90% ci = [15.97,18.47]
+. *
+. *It is narrower and more precise interval because we are less confident that the
+. *true population mean lies within the interval.
+. ci hourly_wage if black==1 & male==1, level(95)
+
+{txt}    Variable {c |}        Obs        Mean    Std. Err.       [95% Conf. Interval]
+{hline 13}{c +}{hline 63}
+ hourly_wage {c |}{col 16}{res}       796{col 29} 20.24811{col 41} .7801485{col 57} 18.71672{col 69} 21.77951{txt}
+
+{com}. *95% ci = [18.72, 21.78]
+. *
+. *This comparison shows us that, on average, black males had a higher hourly wage
+. *than black females did in 2003.
+. 
+. ttest hourly_wage==18.5 if black==1 & male==0
+
+{txt}One-sample t test
+{hline 9}{c TT}{hline 68}
+Variable{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[95% Conf. Interval]
+{hline 9}{c +}{hline 68}
+hourly~e {c |}{res}{col 12}   1018{col 22} 17.21997{col 34} .7597719{col 46} 24.24137{col 58} 15.72907{col 70} 18.71087
+{txt}{hline 9}{c BT}{hline 68}
+    mean = mean({res}hourly_wage{txt})                                      t = {res} -1.6848
+{txt}Ho: mean = {res}18.5                                  {txt}degrees of freedom = {res}    1017
+
+   {txt}Ha: mean < {res}18.5             {txt}Ha: mean != {res}18.5               {txt}Ha: mean > {res}18.5
+ {txt}Pr(T < t) = {res}0.0462         {txt}Pr(|T| > |t|) = {res}0.0923          {txt}Pr(T > t) = {res}0.9538
+{txt}
+{com}. *
+. *Ha: mean < 18.5 p(T < t) = 0.0462
+. *
+. *The probability that the null hypothesis of the hourly wage for black
+. *females being equal to $18.5 is very low (<.05 chance).
+. 
+. ttest hourly_wage if black==1, by(male) unequal
+
+{txt}Two-sample t test with unequal variances
+{hline 9}{c TT}{hline 68}
+   Group{col 10}{c |}{col 16}Obs{col 27}Mean{col 35}Std. Err.{col 47}Std. Dev.{col 59}[95% Conf. Interval]
+{hline 9}{c +}{hline 68}
+       0 {c |}{res}{col 12}   1018{col 22} 17.21997{col 34} .7597719{col 46} 24.24137{col 58} 15.72907{col 70} 18.71087
+       {txt}1 {c |}{res}{col 12}    796{col 22} 20.24811{col 34} .7801485{col 46}  22.0107{col 58} 18.71672{col 70} 21.77951
+{txt}{hline 9}{c +}{hline 68}
+combined {c |}{res}{col 12}   1814{col 22} 18.54874{col 34} .5477919{col 46} 23.33105{col 58} 17.47437{col 70} 19.62311
+{txt}{hline 9}{c +}{hline 68}
+    diff {c |}{res}{col 22}-3.028147{col 34} 1.088983{col 58}-5.163974{col 70}-.8923195
+{txt}{hline 9}{c BT}{hline 68}
+    diff = mean({res}0{txt}) - mean({res}1{txt})                                      t = {res} -2.7807
+{txt}Ho: diff = 0                     Satterthwaite's degrees of freedom = {res} 1772.07
+
+    {txt}Ha: diff < 0                 Ha: diff != 0                 Ha: diff > 0
+ Pr(T < t) = {res}0.0027         {txt}Pr(|T| > |t|) = {res}0.0055          {txt}Pr(T > t) = {res}0.9973
+{txt}
+{com}. *
+. *Ha: diff < 0 p(T < t) = 0.0027
+. *
+. *This tells us that the probability the null hypothesis is true is very low (<.05)
+. *compared to the alternative hypothesis that the difference between the mean 
+. *hourly wage of black females and the mean hourly wage of black males in 2003 is
+. *positive, or greater than 0.
+. 
+{txt}end of do-file
+
+{com}. 

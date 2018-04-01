@@ -1,0 +1,52 @@
+
+. 
+. /*************************************************\
+> * Practice with Stata: data downloaded from internet***/
+. * Date modified:
+. * Output saved in: "/Users/Banjodan2/Desktop/StataPractice/"
+. /***************************************************/
+. 
+. import excel `projectpath'/data/FRBNY-SCE-DATA.xls, sheet("Inflation expectations") cellrange(A4) firstrow
+
+. export delimited using FRBNY-SCE-DATA_Inflation_expectations, replace
+file FRBNY-SCE-DATA_Inflation_expectations.csv saved
+
+. import delimited using FRBNY-SCE-DATA_Inflation_expectations, numericcols(2/9) stringcols(1) clear
+(9 vars, 57 obs)
+
+. 
+. rename f sevenfiveperconeyearexpinflrate
+
+. rename a date
+
+. 
+. gen date2 = date(date,"YM")
+
+. drop date
+
+. gen date = date2
+
+. format date %td
+
+. drop date2
+
+. order date, first
+
+. //mylabels "1 Jul 2013" "1 Jan 2014" "1 Jul 2014" "1 Jan 2015" "1 Jul 2015" "1 Jan 2016" "1 Jul 2016" "1 Jan 2017" "1 Jul 2017" "1
+>  Jan 2018", myscale(clock("@", "DMY")) local(time_labels)
+. 
+. graph twoway line medianoneyearaheadexpectedi medianthreeyearaheadexpected date, legend(label(1 "Median one-year ahead expected in
+> flation rate") label(2 "Median three-year ahead expected inflation rate") rows(2)) ylabel(0(2)8, angle(horizontal)) ytitle("Expect
+> ed inflation rate (%)")
+
+. 
+. graph export `projectpath'/figures/inflation_expectations.png, replace
+(file /Users/Banjodan2/Dropbox/Stata/figures/inflation_expectations.png written in PNG format)
+
+. 
+. log close
+      name:  <unnamed>
+       log:  /Users/Banjodan2/Dropbox/Stata/log/time_series_outcomes.txt
+  log type:  text
+ closed on:  31 Mar 2018, 19:20:03
+------------------------------------------------------------------------------------------------------------------------------------
