@@ -26,8 +26,10 @@ foreach var of varlist noshow {
 	label values _`var' binaryCode
 }
 
-foreach var of varlist scholarship hipertension diabetes alcoholism handcap sms_received {
-	label values `var' binaryCode
+foreach var of varlist scholarship hipertension diabetes alcoholism handcap sms_received `{
+
+/*  ------- break line ------- (by the Stata editor for macOS (piu_sign) )  */ 
+'	label values `var' binaryCode
 }
 
 numlabel, add
